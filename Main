@@ -1,0 +1,143 @@
+using System;
+
+// Пользователь вводит до 3 разных текстов, которые программа обрабатывает и соединяет.
+
+namespace WorkAA
+{
+	class Program
+    {
+        static string LastText = "";
+
+        static void Main(string[] args)
+        {
+            MainMenu();
+        }
+
+        static void MainMenu()
+        {
+		    // Переменные 3 текстов.
+            string Word1 = "";
+            string Word2 = "";
+            string Word3 = "";
+
+			
+			// Ввод пользователем количества текстов.
+			// Также можно поставить clear. Clear очищает весь текст.
+            Console.Write("Введите количество текстов, которое надо объединить\n" +
+            "(Максимум 3 включительно)(Введите 'clear', чтобы очистить строку): ");
+            string WordCount = Console.ReadLine();
+
+			
+			// Проверка, написан ли clear
+            if (WordCount == "clear")
+            {
+                LastText = "";
+            }
+			// Проверка количества текстов, а также ввод текстов.
+            else if (CheckNumber(WordCount))
+            {
+                Console.Write("Введите 1 текст: ");
+                Word1 = Console.ReadLine();
+                if (WordCount != "1")
+                {
+                    Console.Write("Введите 2 текст: ");
+                    Word2 = Console.ReadLine();
+                }
+                if (WordCount != "1" && WordCount != "2")
+                {
+                    Console.Write("Введите 3 текст: ");
+                    Word3 = Console.ReadLine();
+                }
+
+				
+				// Соединение текстов.
+				// Также соединяет с предыдущим текстом(который остался в памяти, если не очищен с помощью clear).
+                switch (WordCount)
+                {
+                    case "1":
+                        if (LastText != "") 
+						{
+							LastText = LastText + " " + SetOrder(Word1);
+						}
+                        else LastText = SetOrder(Word1);
+                        break;
+                    case "2":
+                        if (LastText != "") LastText = LastText + " " + SetOrder(Word1, Word2);
+                        else LastText = SetOrder(Word1, Word2);
+                        break;
+                    case "3":
+                        if (LastText != "") LastText = LastText + " " + SetOrder(Word1, Word2, Word3);
+                        else LastText = SetOrder(Word1, Word2, Word3);
+                        break;
+                }
+
+                Console.WriteLine(LastText);
+            }
+
+			
+			// Бесконечный цикл.
+            MainMenu();
+        }
+
+        static bool CheckNumber(string str)
+        {
+			// Метод проверки того, сколько текстов ввёл пользователь. (ASCII)
+            if (str.Length == 1)
+            {
+                foreach (char c in str)
+                {
+                    if (c < '1' || c > '3')
+                    {
+                        Console.WriteLine("Цифра меньше 1, либо больше 5, либо не является цифрой.");
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Слишком много символов");
+                return false;
+            }
+        }
+
+		
+		// Снизу методы перегруженные, которые обрабатывают текст, ставя в случае надобности точку и выводя соединенный текст.
+        static string Result = "";
+        static string SetOrder(string One)
+        {
+			// Ставит точку в конце, если ее нет.
+			if (One.EndsWith('.'))
+				One += ".";
+			
+			// Выводит результат соединения текста
+            Result = One;
+            return Result;
+        }
+
+        static string SetOrder(string One, string Two)
+        {
+			if (One.EndsWith('.'))
+				One += ".";
+			if (Two.EndsWith('.'))
+				Two += ".";
+		
+            Result = One + " " + Two;
+            return Result;
+        }
+
+        static string SetOrder(string One, string Two, string Three)
+        {
+			if (One.EndsWith('.'))
+				One += ".";
+			if (Two.EndsWith('.'))
+				Two += ".";
+			if (Three.EndsWith('.'))
+				Three += ".";
+		
+            Result = One + " " + Two + " " + Three;
+            return Result;
+        }
+    }
+}
